@@ -1,7 +1,8 @@
-INSTALL spatial;
-LOAD spatial;
+--INSTALL spatial;
+--LOAD spatial;
 
-
+ATTACH 'C:/Users/Matsuda/data_modeling/data/meu_banco.duckdb' AS store;
+USE store;
 select * from read_xlsx('C:\Users\Matsuda\data_modeling\data\raw\bakery_synthetic_dataset.csv (1).xlsx') limit 10;
 
 -- CUSTOMER
@@ -14,7 +15,7 @@ CREATE OR REPLACE TABLE dim_customer  (
     customer_segment VARCHAR(20),
     loyalty_member VARCHAR(5)
 );
-ALTER TABLE dim_customer ALTER COLUMN customer_id type VARCHAR(10);
+--ALTER TABLE dim_customer ALTER COLUMN customer_id type VARCHAR(10);
 -- Employee
 CREATE OR REPLACE TABLE dim_employee(
     employee_id INT PRIMARY KEY
@@ -80,7 +81,7 @@ CREATE OR REPLACE TABLE dim_promotion (
 -- Transaction
 CREATE OR REPLACE TABLE fact_transaction (
     transaction_id INT PRIMARY KEY,
-    customer_id INT REFERENCES dim_customer(customer_id),
+    customer_id INT REFERENCES dim_customer(customer_id_id),
     employee_id INT REFERENCES dim_employee(employee_id),
     payment_id INT REFERENCES dim_payment(payment_id),
     product_id INT REFERENCES dim_product(product_id),
