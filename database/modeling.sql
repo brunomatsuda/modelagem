@@ -1,8 +1,8 @@
 --INSTALL spatial;
 --LOAD spatial;
 
-ATTACH 'C:/Users/Matsuda/data_modeling/data/meu_banco.duckdb' AS store;
-USE store;
+--ATTACH 'C:/Users/Matsuda/data_modeling/data/meu_banco.duckdb' AS store;
+--USE store;
 select * from read_xlsx('C:\Users\Matsuda\data_modeling\data\raw\bakery_synthetic_dataset.csv (1).xlsx') limit 10;
 
 -- CUSTOMER
@@ -15,16 +15,17 @@ CREATE OR REPLACE TABLE dim_customer  (
     customer_segment VARCHAR(20),
     loyalty_member VARCHAR(5)
 );
---ALTER TABLE dim_customer ALTER COLUMN customer_id type VARCHAR(10);
+
 -- Employee
 CREATE OR REPLACE TABLE dim_employee(
-    employee_id INT PRIMARY KEY
+    employee_id INT PRIMARY KEY,
+    employee_code VARCHAR(10)
 );
 
 -- PAYMENT
 CREATE OR REPLACE TABLE dim_payment ( 
     payment_id int PRIMARY KEY,
-    payment_method VARCHAR(20),
+    payment_method VARCHAR(20)
 );
 
 -- PRODUCT
@@ -33,7 +34,7 @@ CREATE OR REPLACE TABLE dim_product (
         product VARCHAR(100),
         category VARCHAR(50),
         unit_price DECIMAL(10, 2),
-        shelf_life_days INT,
+        shelf_life_days INT
 );
 -- CLIMA
 CREATE OR REPLACE TABLE dim_weather (
@@ -57,15 +58,15 @@ CREATE OR REPLACE TABLE dim_due_date (
     due_date DATETIME, -- expiry_date
     expiry_risk varchar(10)
 );
--- Produto
-CREATE OR REPLACE TABLE dim_product (
-    product_id INT PRIMARY KEY,
+-- Inventory
+CREATE OR REPLACE TABLE dim_inventory (
+    inventory_id INT PRIMARY KEY,
     unit_produced INT,
     unit_sold INT,
     unsold_units INT,
     stock_available INT,
     store_id varchar(10),
-    recommended_product VARCHAR(100),
+    recommended_product VARCHAR(100)
 );
 -- Promotion
 CREATE OR REPLACE TABLE dim_promotion (
@@ -80,7 +81,7 @@ CREATE OR REPLACE TABLE dim_promotion (
 
 -- Transaction
 CREATE OR REPLACE TABLE fact_transaction (
-    transaction_id INT PRIMARY KEY,
+    transaction_id VARCHAR(20) PRIMARY KEY,
     customer_id INT REFERENCES dim_customer(customer_id_id),
     employee_id INT REFERENCES dim_employee(employee_id),
     payment_id INT REFERENCES dim_payment(payment_id),
