@@ -19,3 +19,13 @@ models:
             tests:
                 - unique
                 - not_null
+
+
+
+sources:
+  - name: databricks_customer
+    database: analytics
+    schema: default
+    tables:
+      - name: dim_customer
+
